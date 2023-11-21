@@ -24,4 +24,3 @@ function App() {
 }
 
 export default App; // Exporting the App component for use in index.js
-

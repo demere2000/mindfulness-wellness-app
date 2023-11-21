@@ -40,4 +40,3 @@ function WellnessPlan() {
 }
 
 export default WellnessPlan; // Export the WellnessPlan component for use in other parts of the app
-
