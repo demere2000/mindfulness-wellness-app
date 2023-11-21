@@ -2,25 +2,39 @@
 import React, { useState } from 'react';
 // Importing UI components from Material-UI for better styling
 // TextField is used for styled input fields, Button for styled buttons, and Box for layout and spacing
-import { TextField, Button, Box } from '@material-ui/core';
+// LinearProgress is used for displaying progress visually
+import { TextField, Button, Box, LinearProgress } from '@material-ui/core';
 
 // Define the WellnessPlan functional component
 function WellnessPlan() {
     // Initialize state with useState hook. 
     // 'plan' is our state variable, and 'setPlan' is the function to update this state.
-    // Here, the state is an object with one property 'goal' which is initialized as an empty string.
-    // Adding a new 'status' property to store feedback messages after form submission
+    // Here, the state is an object with properties 'goal', 'status', 'progress', and 'badges'
     const [plan, setPlan] = useState({
         goal: '', // The goal property will store the user's wellness goal
-        status: '' // New property to store the status message after form submission
+        status: '', // New property to store the status message after form submission
+        progress: 0, // New state property to track progress percentage
+        badges: [] // New state property to store earned badges
     });
+
+    // Function to calculate badges based on progress
+    const calculateBadges = (newProgress) => {
+        const newBadges = []; // Initialize an array to store earned badges
+        // Add badges based on progress. More conditions can be added here
+        if (newProgress >= 50) newBadges.push('Halfway There!');
+        if (newProgress === 100) newBadges.push('Goal Achieved!');
+        return newBadges; // Return the array of earned badges
+    };
 
     // Define a function to handle the form submission.
     // 'event' is the form event that gets passed to this function automatically on form submission.
     function handleSubmit(event) {
         event.preventDefault(); // Prevent the default form submission behavior which refreshes the page.
-        // Updating the 'status' property in the state with a success message
-        setPlan({ ...plan, status: `Your plan for "${plan.goal}" has been created successfully!` });
+        // Simulating progress update and badge calculation
+        const newProgress = 50; // Example progress update
+        const newBadges = calculateBadges(newProgress); // Calculating new badges
+        // Updating the state with new progress, badges, and a status message
+        setPlan({ ...plan, progress: newProgress, badges: newBadges, status: `Your plan for "${plan.goal}" is making progress!` });
     }
 
     // The JSX returned by our component that describes the UI.
@@ -52,6 +66,18 @@ function WellnessPlan() {
                     </div>
                 )}
             </form>
+            {/* New LinearProgress component to show progress visually */}
+            <LinearProgress variant="determinate" value={plan.progress} style={{ marginTop: '20px' }} />
+            {/* Displaying progress percentage */}
+            <Box mt={2}>Progress: {plan.progress}%</Box> 
+            {/* Displaying earned badges */}
+            {plan.badges.length > 0 && (
+                <Box mt={2}>
+                    <h3>Earned Badges</h3> {/* New: Heading for the badges section */}
+                    {/* New: Mapping through each badge in the badges array and displaying it */}
+                    {plan.badges.map((badge, index) => <div key={index}>{badge}</div>)}
+                </Box>
+            )}
         </Box>
     );
 }
