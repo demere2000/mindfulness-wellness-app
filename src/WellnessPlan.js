@@ -9,15 +9,18 @@ function WellnessPlan() {
     // Initialize state with useState hook. 
     // 'plan' is our state variable, and 'setPlan' is the function to update this state.
     // Here, the state is an object with one property 'goal' which is initialized as an empty string.
+    // Adding a new 'status' property to store feedback messages after form submission
     const [plan, setPlan] = useState({
         goal: '', // The goal property will store the user's wellness goal
+        status: '' // New property to store the status message after form submission
     });
 
     // Define a function to handle the form submission.
     // 'event' is the form event that gets passed to this function automatically on form submission.
     function handleSubmit(event) {
         event.preventDefault(); // Prevent the default form submission behavior which refreshes the page.
-        console.log(plan); // For now, just log the plan object to the console to see the user's input.
+        // Updating the 'status' property in the state with a success message
+        setPlan({ ...plan, status: `Your plan for "${plan.goal}" has been created successfully!` });
     }
 
     // The JSX returned by our component that describes the UI.
@@ -42,6 +45,12 @@ function WellnessPlan() {
                 >
                     Create Plan {/* Text for the submit button */}
                 </Button>
+                {/* New div element for displaying the status message. It's only shown when 'status' is not empty */}
+                {plan.status && (
+                    <div style={{ marginTop: '20px', color: 'green' }}>
+                        {plan.status} {/* Displaying the status message */}
+                    </div>
+                )}
             </form>
         </Box>
     );
